@@ -4,7 +4,10 @@
  */
 package com.mycompany.motorph.v4;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,17 +20,20 @@ public class EmployeeDB extends javax.swing.JFrame {
      * Creates new form Employee
      */
     public EmployeeDB(String username) {
-        this.username= username;
+        this.username = username;
         initComponents();
         setLocationRelativeTo(null);
         loggedInEmployee = Database.getEmployeeDetails(username);
+
         if (loggedInEmployee == null) {
             JOptionPane.showMessageDialog(this, "Error: Employee not found in the database.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         loadEmployeeDetails();
-    }
+        loadEmployeeLeaveData(); 
+}
+
     
     
     private void loadEmployeeDetails() {
@@ -51,9 +57,39 @@ public class EmployeeDB extends javax.swing.JFrame {
     lblRate.setText(String.valueOf(loggedInEmployee.getHourlyRate()));
     lblBasicSalary.setText(String.valueOf(loggedInEmployee.getBasicSalary()));
     
-    
+    lblEmployeeID1.setText(loggedInEmployee.getEmployeeId());
 }
 
+    
+    
+    
+    private void loadEmployeeLeaveData() {
+    DefaultTableModel model = (DefaultTableModel) tblLeave.getModel();
+    model.setRowCount(0); // Clear existing data
+
+    if (loggedInEmployee == null) {
+        JOptionPane.showMessageDialog(this, "Error loading employee details. Employee not found.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    String employeeId = loggedInEmployee.getEmployeeId(); // Get the current employee ID
+    ResultSet rs = Database.getEmployeeLeave(employeeId);
+
+    try {
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getString("id"),
+                rs.getString("employee_id"),
+                rs.getString("leave_type"),
+                rs.getString("start_date"),
+                rs.getString("end_date"),
+                rs.getString("status")
+            });
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error loading leave requests: " + e.getMessage());
+    }
+}
 
 
     /**
@@ -66,13 +102,12 @@ public class EmployeeDB extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        btnEmpDetails = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnRequestLeave = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        EmployeeDetailsPanel = new javax.swing.JPanel();
-        lblEmployeeID = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        parentPanel = new javax.swing.JPanel();
+        EmpDataPanel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         lblFullName = new javax.swing.JLabel();
@@ -95,8 +130,22 @@ public class EmployeeDB extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         lblBasicSalary = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lblEmployeeID = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        requestLeavePanel = new javax.swing.JPanel();
+        lblEmployeeID1 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        lblEndDate = new javax.swing.JTextField();
+        lblStartDate = new javax.swing.JTextField();
+        combobox = new javax.swing.JComboBox<>();
+        jLabel27 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblLeave = new javax.swing.JTable();
+        btnRequestLeaveProcess = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Employee Dashboard");
@@ -104,14 +153,14 @@ public class EmployeeDB extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton2.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jButton2.setText("Employee Details");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnEmpDetails.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        btnEmpDetails.setText("Employee Details");
+        btnEmpDetails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnEmpDetailsActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 180, 40));
+        jPanel1.add(btnEmpDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 180, 40));
 
         jButton3.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
         jButton3.setText("Log Out");
@@ -122,32 +171,25 @@ public class EmployeeDB extends javax.swing.JFrame {
         });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 450, 180, 40));
 
-        jButton4.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jButton4.setText("Request Leave");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnRequestLeave.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        btnRequestLeave.setText("Request Leave");
+        btnRequestLeave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnRequestLeaveActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 180, 40));
+        jPanel1.add(btnRequestLeave, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 180, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/background.jpg"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 500));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 500));
 
-        EmployeeDetailsPanel.setBackground(new java.awt.Color(255, 255, 255));
-        EmployeeDetailsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        parentPanel.setBackground(new java.awt.Color(255, 255, 255));
+        parentPanel.setLayout(new java.awt.CardLayout());
 
-        lblEmployeeID.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        lblEmployeeID.setForeground(new java.awt.Color(0, 0, 0));
-        lblEmployeeID.setText("employee_id");
-        EmployeeDetailsPanel.add(lblEmployeeID, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, -1, 20));
-
-        jLabel3.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(153, 0, 153));
-        jLabel3.setText("Salary Details");
-        EmployeeDetailsPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 170, 20));
+        EmpDataPanel.setBackground(new java.awt.Color(255, 255, 255));
+        EmpDataPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -241,7 +283,7 @@ public class EmployeeDB extends javax.swing.JFrame {
         jLabel9.setText("Supervisor:");
         jPanel3.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 90, 20));
 
-        EmployeeDetailsPanel.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 720, 150));
+        EmpDataPanel.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 720, 170));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -249,44 +291,126 @@ public class EmployeeDB extends javax.swing.JFrame {
 
         lblRate.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         lblRate.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel4.add(lblRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 100, 20));
+        jPanel4.add(lblRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 100, 20));
 
         jLabel22.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(102, 0, 102));
         jLabel22.setText("Salary:");
-        jPanel4.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, 20));
+        jPanel4.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 50, 20));
 
         lblBasicSalary.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         lblBasicSalary.setForeground(new java.awt.Color(0, 0, 0));
         lblBasicSalary.setText("salary");
         lblBasicSalary.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel4.add(lblBasicSalary, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 100, 20));
+        jPanel4.add(lblBasicSalary, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 100, 20));
 
         jLabel23.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(102, 0, 102));
         jLabel23.setText("Rate:");
-        jPanel4.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 50, 20));
+        jPanel4.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 50, 20));
 
-        EmployeeDetailsPanel.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 720, 160));
+        jLabel3.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(153, 0, 153));
+        jLabel3.setText("Salary Details");
+        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 170, 20));
+
+        EmpDataPanel.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 720, 160));
+
+        lblEmployeeID.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        lblEmployeeID.setForeground(new java.awt.Color(0, 0, 0));
+        lblEmployeeID.setText("employee_id");
+        EmpDataPanel.add(lblEmployeeID, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, 20));
 
         jLabel21.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(153, 0, 153));
         jLabel21.setText("Employee ID:");
-        EmployeeDetailsPanel.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 90, 20));
+        EmpDataPanel.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 90, 20));
 
         jLabel7.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(153, 0, 153));
         jLabel7.setText("Basic Information");
-        EmployeeDetailsPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 170, 20));
+        EmpDataPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 170, 20));
 
-        getContentPane().add(EmployeeDetailsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, 740, 500));
+        parentPanel.add(EmpDataPanel, "card2");
+
+        requestLeavePanel.setBackground(new java.awt.Color(255, 255, 255));
+        requestLeavePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblEmployeeID1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        lblEmployeeID1.setForeground(new java.awt.Color(0, 0, 0));
+        lblEmployeeID1.setText("employee_id");
+        requestLeavePanel.add(lblEmployeeID1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, 20));
+
+        jLabel24.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(153, 0, 153));
+        jLabel24.setText("Leave Type:");
+        requestLeavePanel.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 90, 20));
+
+        jLabel25.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(153, 0, 153));
+        jLabel25.setText("Employee ID:");
+        requestLeavePanel.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 90, 20));
+
+        jLabel26.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(153, 0, 153));
+        jLabel26.setText("Start Date:");
+        requestLeavePanel.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 80, 20));
+        requestLeavePanel.add(lblEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 90, 170, -1));
+        requestLeavePanel.add(lblStartDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 170, -1));
+
+        combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Vacation Leave", "Sick Leave", "Emergency Leave", "Maternity/Paternity Leave" }));
+        requestLeavePanel.add(combobox, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 170, -1));
+
+        jLabel27.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(153, 0, 153));
+        jLabel27.setText("End Date:");
+        requestLeavePanel.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 80, 20));
+
+        tblLeave.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Employee ID", "Leave Type", "Start Date", "End Date", "Status"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblLeave);
+
+        requestLeavePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 720, 310));
+
+        btnRequestLeaveProcess.setText("Request Leave");
+        btnRequestLeaveProcess.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRequestLeaveProcessActionPerformed(evt);
+            }
+        });
+        requestLeavePanel.add(btnRequestLeaveProcess, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 40, 160, 30));
+
+        parentPanel.add(requestLeavePanel, "card3");
+
+        getContentPane().add(parentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, 740, 500));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnEmpDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpDetailsActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        parentPanel.removeAll();
+        parentPanel.add(EmpDataPanel);
+        parentPanel.repaint();
+        parentPanel.revalidate();
+    }//GEN-LAST:event_btnEmpDetailsActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
@@ -297,10 +421,42 @@ public class EmployeeDB extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnRequestLeaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestLeaveActionPerformed
         // TODO add your handling code here:
+        parentPanel.removeAll();
+        parentPanel.add(requestLeavePanel);
+        parentPanel.repaint();
+        parentPanel.revalidate();
         
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnRequestLeaveActionPerformed
+
+    private void btnRequestLeaveProcessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestLeaveProcessActionPerformed
+        // TODO add your handling code here:
+        String employee_id= loggedInEmployee.getEmployeeId();
+        String start_date= lblStartDate.getText();
+        String end_date= lblEndDate.getText();
+        String id= employee_id+"-"+start_date+"-"+end_date;
+        String status= "Pending";
+        String leave_type= combobox.getSelectedItem().toString();
+        
+        
+        if (start_date.isEmpty() || end_date.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Start Date and End date cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }try {
+        boolean success = Database.requestLeave(id, employee_id, leave_type, start_date, end_date, status);
+
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Leave Request submitted successfully!");
+            loadEmployeeLeaveData(); 
+        } else {
+            JOptionPane.showMessageDialog(this, "Error Requesting Leave.", "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Database error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+    }
+        
+    }//GEN-LAST:event_btnRequestLeaveProcessActionPerformed
 
     /**
      * @param args the command line arguments
@@ -339,10 +495,12 @@ public class EmployeeDB extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel EmployeeDetailsPanel;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JPanel EmpDataPanel;
+    private javax.swing.JButton btnEmpDetails;
+    private javax.swing.JButton btnRequestLeave;
+    private javax.swing.JButton btnRequestLeaveProcess;
+    private javax.swing.JComboBox<String> combobox;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -350,6 +508,10 @@ public class EmployeeDB extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -360,16 +522,23 @@ public class EmployeeDB extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblBasicSalary;
     private javax.swing.JLabel lblBirthday;
     private javax.swing.JLabel lblDepartment;
     private javax.swing.JLabel lblEmployeeID;
+    private javax.swing.JLabel lblEmployeeID1;
+    private javax.swing.JTextField lblEndDate;
     private javax.swing.JLabel lblFullName;
     private javax.swing.JLabel lblPhone;
     private javax.swing.JLabel lblPosition;
     private javax.swing.JLabel lblRate;
+    private javax.swing.JTextField lblStartDate;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JLabel lblSupervisor;
+    private javax.swing.JPanel parentPanel;
+    private javax.swing.JPanel requestLeavePanel;
+    private javax.swing.JTable tblLeave;
     // End of variables declaration//GEN-END:variables
 }

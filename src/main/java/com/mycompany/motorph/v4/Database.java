@@ -216,8 +216,126 @@ public class Database {
     return null;
 }
 
+public static ResultSet getLeave() {
+    String sql = "SELECT id, employee_id, leave_type, start_date, end_date, status  FROM leave_request";
+    try {
+        Connection conn = getConnection(); 
+        if (conn == null || conn.isClosed()) {
+            System.out.println("Database connection is closed. Reconnecting...");
+            conn = DriverManager.getConnection(URL); // Reconnect
+        }
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        return pstmt.executeQuery(); 
+    } catch (SQLException e) {
+        System.out.println("Error retrieving Leave Requests: " + e.getMessage());
+        return null;
+    }
+}
 
 
+
+public static boolean requestLeave(String id, String employeeId, String leaveType, String startDate, String endDate, String status) {
+    String sql = "INSERT INTO leave_request (id, employee_id, leave_type, start_date, end_date, status) VALUES (?, ?, ?, ?, ?, ?)";
+
+    try (Connection conn = getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        
+        pstmt.setString(1, id);
+        pstmt.setString(2, employeeId);
+        pstmt.setString(3, leaveType);
+        pstmt.setString(4, startDate);
+        pstmt.setString(5, endDate);
+        pstmt.setString(6, status);
+
+        int rowsInserted = pstmt.executeUpdate();
+        return rowsInserted > 0;
+    } catch (SQLException e) {
+        System.out.println("Error inserting leave request: " + e.getMessage());
+        return false;
+    }
+}
+
+public static boolean updateLeave(String id, String status) {
+    String sql = "UPDATE leave_request SET status = ? WHERE id = ?";
+
+    try (Connection conn = getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        
+        pstmt.setString(1, status);
+        pstmt.setString(2, id);
+
+        int rowsUpdated = pstmt.executeUpdate(); 
+        return rowsUpdated > 0;
+    } catch (SQLException e) {
+        System.out.println("Error updating leave request: " + e.getMessage());
+        return false;
+    }
+}
+
+
+public static boolean updateEmployee(String employee_id, String last_name, String first_name, String username, String birthday,  
+                                     String phone_number, String address,  String status, String position, 
+                                     String supervisor, String department,  double basic_salary, double hourly_rate) {
+    String sql = "UPDATE employee SET last_name = ?, first_name = ?, username = ? ,birthday = ?, phone_number = ?, address = ?,  status = ?, position = ?, supervisor = ?, department = ?, basic_salary = ?, hourly_rate = ? WHERE employee_id = ?";
+    
+    try (Connection conn = getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setString(13, employee_id);
+        pstmt.setString(1, last_name);
+        pstmt.setString(2, first_name);
+        pstmt.setString(3, username);
+        pstmt.setString(4, birthday);
+        pstmt.setString(5, phone_number);
+        pstmt.setString(6, address);
+        pstmt.setString(7, status);
+        pstmt.setString(8, position);
+        pstmt.setString(9, supervisor);
+        pstmt.setString(10, department);        
+        pstmt.setDouble(11, basic_salary);
+        pstmt.setDouble(12, hourly_rate);
+        
+
+        int rowsUpdated = pstmt.executeUpdate();
+        return rowsUpdated > 0;
+    } catch (SQLException e) {
+        System.out.println("Error updating employee: " + e.getMessage());
+        return false;
+    }
+}
+
+
+public static boolean deleteEmployee(String employee_id) {
+    String sql = "DELETE FROM employee WHERE employee_id = ?";
+    
+    try (Connection conn = getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setString(1, employee_id);
+        int rowsDeleted = pstmt.executeUpdate();
+        return rowsDeleted > 0;
+    } catch (SQLException e) {
+        System.out.println("Error deleting employee: " + e.getMessage());
+        return false;
+    }
+}
+
+
+
+
+
+public static ResultSet getEmployeeLeave(String employeeId) {
+    String sql = "SELECT * FROM leave_request WHERE employee_id = ?";
+    try {
+        Connection conn = getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, employeeId);
+        return pstmt.executeQuery();
+    } catch (SQLException e) {
+        System.out.println("Error retrieving leave requests: " + e.getMessage());
+        return null;
+    }
+}
 
     // Method to close the database connection
     public static void closeConnection() {

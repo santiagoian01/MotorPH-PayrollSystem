@@ -21,6 +21,7 @@ public class HRManagerDB extends javax.swing.JFrame {
         initComponents();
         loadEmployeeData();
         setLocationRelativeTo(null);
+        loadLeaveData();
     }
     
     private void loadEmployeeData() {
@@ -51,6 +52,34 @@ public class HRManagerDB extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error loading employee data: " + e.getMessage());
         }
     }
+    
+
+        private void loadLeaveData() {
+        DefaultTableModel model = (DefaultTableModel) tableLeave.getModel();
+        model.setRowCount(0); 
+
+        ResultSet rs = Database.getLeave();
+        try {
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getString("id"),
+                    rs.getString("employee_id"),
+                    rs.getString("leave_type"),
+                    rs.getString("start_date"), 
+                    rs.getString("end_date"),
+                    rs.getString("status"),
+                   
+                    
+                });
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error loading Leave data: " + e.getMessage());
+        }
+    }
+    
+    
+   
+    
     
     private void clearTextFields() {
     txtEmpID.setText("");
@@ -84,6 +113,7 @@ public class HRManagerDB extends javax.swing.JFrame {
         logout = new javax.swing.JButton();
         viewEmp = new javax.swing.JButton();
         empDetails = new javax.swing.JButton();
+        btnLeave = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         parentPanel = new javax.swing.JPanel();
         empData = new javax.swing.JScrollPane();
@@ -120,6 +150,14 @@ public class HRManagerDB extends javax.swing.JFrame {
         txtPassword = new javax.swing.JTextField();
         label17 = new java.awt.Label();
         txtRole = new javax.swing.JTextField();
+        leavePanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableLeave = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        comboboxStatus = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        txtID = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HR MANAGER DASHBOARD");
@@ -154,6 +192,15 @@ public class HRManagerDB extends javax.swing.JFrame {
             }
         });
         jPanel1.add(empDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 180, 40));
+
+        btnLeave.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        btnLeave.setText("Leave Requests");
+        btnLeave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLeaveActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnLeave, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 180, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/background.jpg"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 500));
@@ -327,6 +374,11 @@ public class HRManagerDB extends javax.swing.JFrame {
 
         btndelete.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
         btndelete.setText("Delete");
+        btndelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btndeleteActionPerformed(evt);
+            }
+        });
         employee_details.add(btndelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 200, 110, 30));
 
         btncreate.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
@@ -340,6 +392,11 @@ public class HRManagerDB extends javax.swing.JFrame {
 
         btnupdate.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
         btnupdate.setText("Update");
+        btnupdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnupdateActionPerformed(evt);
+            }
+        });
         employee_details.add(btnupdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 150, 110, 30));
 
         label15.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
@@ -386,6 +443,56 @@ public class HRManagerDB extends javax.swing.JFrame {
         employee_details.add(txtRole, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 360, 390, -1));
 
         parentPanel.add(employee_details, "card3");
+
+        leavePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tableLeave.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Date", "Employee ID", "Description", "Leave Date", "Status"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tableLeave);
+
+        leavePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 720, 360));
+
+        jLabel2.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        jLabel2.setText("Status");
+        leavePanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 60, 30));
+
+        comboboxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Rejected", "Approved" }));
+        leavePanel.add(comboboxStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, 170, 30));
+
+        jLabel3.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        jLabel3.setText("ID");
+        leavePanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 60, 30));
+
+        txtID.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        leavePanel.add(txtID, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, 320, 30));
+
+        jButton1.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        jButton1.setText("Update Leave Request");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        leavePanel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, 200, 30));
+
+        parentPanel.add(leavePanel, "card4");
 
         getContentPane().add(parentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, 740, 500));
 
@@ -511,6 +618,100 @@ public class HRManagerDB extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRoleActionPerformed
 
+    private void btnLeaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeaveActionPerformed
+        // TODO add your handling code here:
+        parentPanel.removeAll();
+        parentPanel.add(leavePanel);
+        parentPanel.repaint();
+        parentPanel.revalidate();
+    }//GEN-LAST:event_btnLeaveActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        String id = txtID.getText();
+        String status= comboboxStatus.getSelectedItem().toString();
+        
+        if (id.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "ID cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }try {
+        boolean success = Database.updateLeave(id, status);
+
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Leave Request updated successfully!");
+            loadLeaveData();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error Requesting Leave.", "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Database error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+    }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
+        // TODO add your handling code here:
+    String employee_id = txtEmpID.getText().trim();
+    String last_name = txtlastName.getText().trim();
+    String first_name = txtfirstName.getText().trim();
+    String username = txtUsername.getText().trim();
+    String birthday = txtbirthday.getText().trim();
+    String phone_number = txtphoneNumber.getText().trim();
+    String address = txtaddress.getText().trim();
+    
+    String status = txtstatus.getText().trim();
+    String position = txtposition.getText().trim();
+    String supervisor = txtsupervisor.getText().trim();
+    String department = txtdepartment.getText().trim();
+    
+    double basic_salary = Double.parseDouble(txtsalary.getText().trim());
+    double hourly_rate = (double) basic_salary / 160; 
+    hourly_rate = Math.round(hourly_rate * 100.0) / 100.0;
+
+    if (employee_id.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Employee ID is required for update.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    boolean success = Database.updateEmployee(employee_id, last_name, first_name, username, birthday, phone_number, address, status, position,supervisor, department, basic_salary, hourly_rate);
+
+    if (success) {
+        JOptionPane.showMessageDialog(this, "Employee updated successfully!");
+        loadEmployeeData();
+        clearTextFields();
+    } else {
+        JOptionPane.showMessageDialog(this, "Error updating employee.", "Database Error", JOptionPane.ERROR_MESSAGE);
+    }
+        
+       
+        
+    }//GEN-LAST:event_btnupdateActionPerformed
+
+    private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
+        // TODO add your handling code here:
+    String employee_id = txtEmpID.getText().trim();
+
+    if (employee_id.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please enter an Employee ID to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this employee?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+    
+    if (confirm == JOptionPane.YES_OPTION) {
+        boolean success = Database.deleteEmployee(employee_id);
+
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Employee deleted successfully!");
+            loadEmployeeData(); // Refresh table
+            clearTextFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error deleting employee.", "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    }//GEN-LAST:event_btndeleteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -547,16 +748,22 @@ public class HRManagerDB extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLeave;
     private javax.swing.JButton btncreate;
     private javax.swing.JButton btndelete;
     private javax.swing.JButton btnupdate;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox<String> comboboxStatus;
     private javax.swing.JScrollPane empData;
     private javax.swing.JButton empDetails;
     private javax.swing.JTable employee_data;
     private javax.swing.JPanel employee_details;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private java.awt.Label label10;
     private java.awt.Label label12;
     private java.awt.Label label13;
@@ -571,9 +778,12 @@ public class HRManagerDB extends javax.swing.JFrame {
     private java.awt.Label label7;
     private java.awt.Label label8;
     private java.awt.Label label9;
+    private javax.swing.JPanel leavePanel;
     private javax.swing.JButton logout;
     private javax.swing.JPanel parentPanel;
+    private javax.swing.JTable tableLeave;
     private javax.swing.JTextField txtEmpID;
+    private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtRole;
     private javax.swing.JTextField txtUsername;
