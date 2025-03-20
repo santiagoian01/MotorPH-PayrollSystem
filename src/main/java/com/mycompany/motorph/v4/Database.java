@@ -306,18 +306,33 @@ public static boolean updateEmployee(String employee_id, String last_name, Strin
 
 
 public static boolean deleteEmployee(String employee_id) {
-    String sql = "DELETE FROM employee WHERE employee_id = ?";
+    String sqlUser = "DELETE FROM user WHERE id = ?";
+    String sqlEmployee = "DELETE FROM employee WHERE employee_id = ?";
     
     try (Connection conn = getConnection();
-         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+         PreparedStatement pstmtUser = conn.prepareStatement(sqlUser);
+         PreparedStatement pstmtEmployee = conn.prepareStatement(sqlEmployee)) {
 
-        pstmt.setString(1, employee_id);
-        int rowsDeleted = pstmt.executeUpdate();
+        // Start transaction
+        conn.setAutoCommit(false);
+
+        // Delete from user table first
+        pstmtUser.setString(1, employee_id);
+        pstmtUser.executeUpdate();
+
+        // Delete from employee table
+        pstmtEmployee.setString(1, employee_id);
+        int rowsDeleted = pstmtEmployee.executeUpdate();
+
+        // Commit transaction if successful
+        conn.commit();
         return rowsDeleted > 0;
+
     } catch (SQLException e) {
         System.out.println("Error deleting employee: " + e.getMessage());
         return false;
-    }
+        
+    } 
 }
 
 
