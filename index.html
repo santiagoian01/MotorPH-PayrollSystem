@@ -1,140 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MotorPH Payroll System - Group 12</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #0d6efd;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    .container {
-      max-width: 1100px;
-      margin: 20px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h1, h2, h3 {
-      color: #333;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 30px;
-    }
-    table, th, td {
-      border: 1px solid #ddd;
-    }
-    th, td {
-      padding: 10px;
-      text-align: left;
-    }
-    th {
-      background-color: #0d6efd;
-      color: white;
-    }
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #f1f1f1;
-      font-size: 0.9em;
-      color: #555;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotorPH Payroll System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .header {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2, h3, h4 {
+            color: #000;
+        }
+        .content {
+            margin-top: 20px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #000;
+            color: #fff;
+        }
+        ul {
+            margin-left: 20px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-style: italic;
+            text-align: center;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>MotorPH Payroll System</h1>
+        </div>
+        <div class="content">
+            <h2>Welcome to the official documentation for the MotorPH Payroll System</h2>
+            <p>This platform is designed for efficient payroll processing, leave management, and employee record handling. Developed as part of a collaborative project, this system ensures secure, accurate, and streamlined HR operations.</p>
 
-  <header>
-    <h1>MotorPH Payroll System</h1>
-    <p>Developed by Group 12</p>
-  </header>
+            <h3>Group 12 – Development Team</h3>
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+                <tr>
+                    <td>Christian Noel Busalanan</td>
+                    <td>lr.cnbusalanan@mmdc.mcl.edu.ph</td>
+                </tr>
+                <tr>
+                    <td>Claude Derick Gigante</td>
+                    <td>lr.cdgigante@mmdc.mcl.edu.ph</td>
+                </tr>
+                <tr>
+                    <td>Ian Federico Santiago</td>
+                    <td>lr.ifsantiago@mmdc.mcl.edu.ph</td>
+                </tr>
+                <tr>
+                    <td>James Earl Teriales</td>
+                    <td>lr.jeteriales@mmdc.mcl.edu.ph</td>
+                </tr>
+                <tr>
+                    <td>Joshua Ricohermozo</td>
+                    <td>lr.jricohermozo@mmdc.mcl.edu.ph</td>
+                </tr>
+                <tr>
+                    <td>Kimberly Guevara</td>
+                    <td>lr.kguevara@mmdc.mcl.edu.ph</td>
+                </tr>
+                <tr>
+                    <td>Ratherford Abaya</td>
+                    <td>lr.rabaya@mmdc.mcl.edu.ph</td>
+                </tr>
+            </table>
 
-  <div class="container">
-    <h2>About the Project</h2>
-    <p>
-      The MotorPH Payroll System is a Java-based application designed to streamline payroll processing, employee leave management, and HR operations for MOTORPH. This system ensures secure, accurate, and efficient handling of employee data and payroll records.
-    </p>
+            <h3>Project Overview</h3>
+            <p>The MotorPH Payroll System is a desktop-based application tailored for HR operations at MotorPH. It provides functionalities for:</p>
+            <ul>
+                <li>Secure Login for employees and HR</li>
+                <li>Leave Request Management</li>
+                <li>Employee Data Management (CRUD)</li>
+                <li>Accurate Payroll Processing with Deduction Calculations</li>
+            </ul>
 
-    <h2>Development Team - Group 12</h2>
-    <table>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-      </tr>
-      <tr><td>Christian Noel Busalanan</td><td>lr.cnbusalanan@mmdc.mcl.edu.ph</td></tr>
-      <tr><td>Claude Derick Gigante</td><td>lr.cdgigante@mmdc.mcl.edu.ph</td></tr>
-      <tr><td>Ian Federico Santiago</td><td>lr.ifsantiago@mmdc.mcl.edu.ph</td></tr>
-      <tr><td>James Earl Teriales</td><td>lr.jeteriales@mmdc.mcl.edu.ph</td></tr>
-      <tr><td>Joshua Ricohermozo</td><td>lr.jricohermozo@mmdc.mcl.edu.ph</td></tr>
-      <tr><td>Kimberly Guevara</td><td>lr.kguevara@mmdc.mcl.edu.ph</td></tr>
-      <tr><td>Ratherford Abaya</td><td>lr.rabaya@mmdc.mcl.edu.ph</td></tr>
-    </table>
+            <h3>Features</h3>
+            <h4>1. Secure Login</h4>
+            <ul>
+                <li>User authentication via login credentials</li>
+                <li>Error handling for invalid login attempts</li>
+            </ul>
 
-    <h2>Key Features</h2>
-    <ul>
-      <li>Secure Login for Employees and HR</li>
-      <li>Leave Request Management</li>
-      <li>Employee Data Management (CRUD)</li>
-      <li>Accurate Payroll Processing with Deductions</li>
-    </ul>
+            <h4>2. Employee Leave Management</h4>
+            <ul>
+                <li>Submit leave requests (Vacation, Sick, Emergency, Maternity/Paternity)</li>
+                <li>View leave history</li>
+                <li>HR approval or rejection functionality</li>
+            </ul>
 
-    <h2>Test Scenarios</h2>
-    <table>
-      <tr>
-        <th>Scenario</th>
-        <th>Test Case</th>
-        <th>Expected Result</th>
-        <th>Actual Result</th>
-        <th>Status</th>
-      </tr>
-      <tr>
-        <td>Login Functionality</td>
-        <td>Log in with valid credentials</td>
-        <td>Redirected to dashboard</td>
-        <td>Redirected to dashboard</td>
-        <td>Pass</td>
-      </tr>
-      <tr>
-        <td>Leave Request</td>
-        <td>Submit Vacation Leave</td>
-        <td>Leave submitted successfully</td>
-        <td>Leave submitted successfully</td>
-        <td>Pass</td>
-      </tr>
-      <tr>
-        <td>HR Duties</td>
-        <td>Approve Leave Request</td>
-        <td>Leave status updated</td>
-        <td>Leave status updated</td>
-        <td>Pass</td>
-      </tr>
-      <tr>
-        <td>Payroll Processing</td>
-        <td>Process Employee Payroll</td>
-        <td>Payroll processed successfully</td>
-        <td>Payroll processed successfully</td>
-        <td>Pass</td>
-      </tr>
-    </table>
+            <h4>3. HR Manager Duties</h4>
+            <ul>
+                <li>Create, read, update, delete (CRUD) employee records</li>
+                <li>Review and manage leave requests</li>
+            </ul>
 
-    <h3>License</h3>
-    <p>This project is licensed under the MIT License.</p>
-  </div>
+            <h4>4. Payroll Processing</h4>
+            <ul>
+                <li>Calculate salaries including deductions (SSS, PhilHealth, TIN, Pag-IBIG)</li>
+                <li>Generate payslips</li>
+                <li>Store payroll records</li>
+            </ul>
 
-  <div class="footer">
-    &copy; 2025 Group 12 - MotorPH Payroll System
-  </div>
+            <h3>Test Cases</h3>
+            <table class="table">
+                <tr>
+                    <th>Scenario</th>
+                    <th>Test Case ID</th>
+                    <th>Test Description</th>
+                    <th>Steps</th>
+                    <th>Expected Result</th>
+                    <th>Actual Result</th>
+                    <th>Test Result</th>
+                </tr>
+                <tr>
+                    <td>Login Functionality</td>
+                    <td>1</td>
+                    <td>Launch Payroll System</td>
+                    <td>Run HRManagerDB class</td>
+                    <td>Redirect to Login Tab</td>
+                    <td>Redirect to Login Tab</td>
+                    <td>Pass</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>2</td>
+                    <td>Login with valid credentials</td>
+                    <td>Enter valid username and password, click Login</td>
+                    <td>Redirect to dashboard</td>
+                    <td>Redirect to dashboard</td>
+                    <td>Pass</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>3</td>
+                    <td>Login with invalid credentials</td>
+                    <td>Enter invalid credentials, click Login</td>
+                    <td>Error message shown</td>
+                    <td>Error message shown</td>
+                    <td>Pass</td>
+                </tr>
+                <tr>
+                    <td>Employee Leave Request</td>
+                    <td>4</td>
+                    <td>Access Leave Request page</td>
+                    <td>Login → Employee Dashboard → Leave Request page</td>
+                    <td>Leave request page shown</td>
+                    <td>Leave request page shown</td>
+                    <td>Pass</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>5</td>
+                    <td>Submit Leave Request</td>
+                    <td>Input start/end date, select leave type, submit</td>
+                    <td>Leave request submitted successfully</td>
+                    <td>Leave request submitted successfully</td>
+                    <td>Pass</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>6</td>
+                    <td>View recent leave requests</td>
+                    <td>Submit leave → Notification → View updated history</td>
+                    <td>Most recent request at top</td>
+                    <td>Most recent request at top</td>
+                    <td>Pass</td>
+                </tr>
+                <tr>
+                    <td>HR Manager Duties</td>
+                    <td>7</td>
+                    <td>View Employee Details</td>
+                    <td>HR Dashboard → Click “Employee Details”</td>
+                    <td>Employee details displayed</td>
+                    <td>Employee details displayed</td>
+                    <td>Pass</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>8</td>
+                    <td>Create, Update, Delete Employee Records</td>
+                    <td>Fill form → Click Save/Update/Delete → Confirm</td>
+                    <td>Action completed successfully</td>
+                    <td>Action completed successfully</td>
+                    <td>Pass</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>9</td>
+                    <td>Approve/Reject Leave Requests</td>
+                    <td>Enter employee number → Status (Pending/Approved/Rejected) → Click “Update”</td>
+                    <td>Leave request updated</td>
+                    <td>Leave request updated</td>
+                    <td>Pass</td>
+                </tr>
+                <tr>
+                    <td>Payroll Processing</td>
+                    <td>10</td>
+                    <td>Access Payroll Dashboard</td>
+                    <td>Login as HR/Admin → Click Process Payroll</td>
+                    <td>Routed to payroll page</td>
+                    <td>Routed to payroll page</td>
+                    <td>Pass</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>11</td>
+                    <td>Process Payroll</td>
+                    <td>Input hours, overtime, deductions → Click Calculate → Click Process Payroll</td>
+                    <td>Payroll processed successfully</td>
+                    <td>Payroll processed successfully</td>
+                    <td>Pass</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>12</td>
+                    <td>View Processed Payslip</td>
+                    <td>Process payroll → Confirmation → Review latest payslip</td>
+                    <td>Most recent payslip visible</td>
+                    <td>Most recent payslip visible</td>
+                    <td>Pass</td>
+                </tr>
+            </table>
 
+            <h3>How to Use</h3>
+            <ul>
+                <li>Clone the repository from GitHub</li>
+                <li>Compile the project using any Java IDE or via command line</li>
+                <li>Launch the application and log in with valid credentials</li>
+                <li>Access respective modules: Leave, Employee Management, Payroll</li>
+            </ul>
+
+            <div class="footer">
+                <p>Thank you for visiting our documentation! For any concerns or technical support, feel free to contact any group member.</p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
