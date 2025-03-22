@@ -7,35 +7,74 @@
   <title>MotorPH Payroll System Documentation</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+ul, ol {
+  margin-left: 20px;
+}
     body {
       font-family: 'Inter', sans-serif;
-      margin: 0;
       background-color: #f5f7fa;
       color: #1a1a1a;
+      line-height: 1.6;
     }
 
     header {
       background-color: #2a3fba;
       color: white;
-      padding: 2rem;
+      padding: 2rem 1rem;
       text-align: center;
     }
 
     header h1 {
-      margin: 0;
       font-size: 2rem;
     }
 
     header p {
-      margin: 0;
       font-size: 1rem;
       color: #cbd5f0;
+    }
+
+    nav {
+      background-color: #1f2f80;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-logo {
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
     }
 
     .container {
       max-width: 1000px;
       margin: 2rem auto;
-      padding: 1rem;
+      padding: 0 1rem;
     }
 
     .section {
@@ -49,6 +88,7 @@
     .section h2 {
       color: #2a3fba;
       margin-top: 0;
+      margin-bottom: 1rem;
     }
 
     table {
@@ -57,7 +97,8 @@
       margin-top: 1rem;
     }
 
-    th, td {
+    th,
+    td {
       padding: 0.75rem;
       text-align: left;
       border-bottom: 1px solid #ddd;
@@ -76,23 +117,67 @@
       text-decoration: underline;
     }
 
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 1.5rem;
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #2a3fba;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .back-to-top:hover {
+      background-color: #1f2f80;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        flex-direction: column;
+        background-color: #1f2f80;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 100%;
+        display: none;
       }
 
-      header p {
-        font-size: 0.875rem;
+      .nav-links.active {
+        display: flex;
       }
 
-      th, td {
-        font-size: 0.875rem;
+      .menu-toggle {
+        display: block;
+        cursor: pointer;
+        color: white;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .menu-toggle {
+        display: none;
       }
     }
   </style>
 </head>
 
 <body>
+  <nav>
+    <div class="nav-logo">MotorPH Payroll</div>
+    <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+    <div class="nav-links" id="navLinks">
+      <a href="#overview">Overview</a>
+      <a href="#getting-started">Getting Started</a>
+      <a href="#using">Using the System</a>
+      <a href="https://github.com/christianbusalanan/MotorPH-PayrollSystem" target="_blank">GitHub</a>
+      <a href="#test">Test Cases</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
   <header>
     <h1>MotorPH Payroll System</h1>
     <p>Official Project Documentation</p>
@@ -100,18 +185,15 @@
 
   <div class="container">
     <div class="section">
-      <p>
-        Welcome to the official documentation for the MotorPH Payroll System. This platform is designed for efficient payroll processing, leave management, and employee record handling. Developed as part of a collaborative project, this system ensures secure, accurate, and streamlined HR operations.
-      </p>
+      <h2>Group Information</h2>
+      <p><strong>Section:</strong> Merge with H2101, A2102, S2101</p>
+      <p><strong>Group:</strong> Group 12 – MotorPH Payroll System Development Team</p>
     </div>
 
     <div class="section">
-      <h2>Group 12 – Development Team</h2>
+      <h2>Group Members</h2>
       <table>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-        </tr>
+        <tr><th>Name</th><th>Email</th></tr>
         <tr><td>Christian Noel Busalanan</td><td>lr.cnbusalanan@mmdc.mcl.edu.ph</td></tr>
         <tr><td>Claude Derick Gigante</td><td>lr.cdgigante@mmdc.mcl.edu.ph</td></tr>
         <tr><td>Ian Federico Santiago</td><td>lr.ifsantiago@mmdc.mcl.edu.ph</td></tr>
@@ -122,87 +204,65 @@
       </table>
     </div>
 
-    <div class="section">
-      <h2>Project Overview</h2>
-      <p>The MotorPH Payroll System is a desktop-based application tailored for HR operations at MotorPH. It provides functionalities for:</p>
+    <div class="section" id="overview">
+      <h2>Introduction</h2>
+      <p>This section provides users with a brief overview of the payroll system, identifies the intended audience, and offers instructions on how to effectively navigate and utilize the user guide. The MotorPH Payroll System is a desktop-based application tailored for HR operations, streamlining payroll processing, leave management, and employee data management with security and efficiency.</p>
+    </div>
+
+    <div class="section" id="getting-started">
+      <h2>Getting Started</h2>
       <ul>
-        <li>Secure Login for employees and HR</li>
-        <li>Leave Request Management</li>
-        <li>Employee Data Management (CRUD)</li>
-        <li>Accurate Payroll Processing with Deduction Calculations</li>
+        	<li><strong>Hardware/Software Requirements:</strong> Java Runtime Environment (JRE), a Java IDE (e.g., IntelliJ IDEA, Eclipse), and access to a Windows-based machine.</li>
+        	<li><strong>Accessing the System:</strong> Clone the repository from GitHub, compile using the IDE or command line, and launch the application.</li>
       </ul>
     </div>
 
-    <div class="section">
-      <h2>Features</h2>
+    <div class="section" id="using">
+      <h2>Using the Payroll System</h2>
       <ol>
-        <li><strong>Secure Login:</strong> User authentication with error handling.</li>
-        <li><strong>Employee Leave Management:</strong> Submit/view leave requests; HR approval/rejection.</li>
-        <li><strong>HR Manager Duties:</strong> CRUD for employee records; manage leave requests.</li>
-        <li><strong>Payroll Processing:</strong> Calculate salaries with deductions; generate/store payslips.</li>
+        <li><strong>Secure Login Procedures:</strong> Login using valid username and password credentials specific to each role (HR Manager, Payroll Staff, Employee).</li>
+        <li><strong>Salary and Deduction Calculations:</strong> Automated salary computation based on employee records, deductions, and applicable benefits.</li>
+        <li><strong>Leave Applications:</strong> Employees can submit leave requests; HR can approve or reject them directly in the system interface.</li>
       </ol>
     </div>
 
-    <div class="section">
-      <h2>Demo Accounts</h2>
-      <table>
-        <tr>
-          <th>Username</th>
-          <th>Password</th>
-          <th>Role</th>
-        </tr>
-        <tr><td>villanuevaam</td><td>villanuevaam123</td><td>HR Manager</td></tr>
-        <tr><td>lopezj</td><td>lopezj123</td><td>Payroll Staff</td></tr>
-        <tr><td>gariciam</td><td>garciam123</td><td>Employee</td></tr>
-      </table>
-    </div>
-
-    <div class="section">
+    <div class="section" id="github">
       <h2>GitHub Repository</h2>
       <p>Access the full project here: <a href="https://github.com/christianbusalanan/MotorPH-PayrollSystem" target="_blank">https://github.com/christianbusalanan/MotorPH-PayrollSystem</a></p>
     </div>
 
-    <div class="section">
+    <div class="section" id="test">
       <h2>Test Cases</h2>
-      <table>
-        <tr>
-          <th>Scenario</th>
-          <th>Test Case ID</th>
-          <th>Test Description</th>
-          <th>Steps</th>
-          <th>Expected Result</th>
-          <th>Actual Result</th>
-          <th>Test Result</th>
-        </tr>
-        <tr><td>Login Functionality</td><td>1</td><td>Launch Payroll System</td><td>Run HRManagerDB class</td><td>Redirect to Login Tab</td><td>Redirect to Login Tab</td><td>Pass</td></tr>
-        <tr><td></td><td>2</td><td>Login with valid credentials</td><td>Enter valid username and password, click Login</td><td>Redirect to dashboard</td><td>Redirect to dashboard</td><td>Pass</td></tr>
-        <tr><td></td><td>3</td><td>Login with invalid credentials</td><td>Enter invalid credentials, click Login</td><td>Error message shown</td><td>Error message shown</td><td>Pass</td></tr>
-        <tr><td>Employee Leave Request</td><td>4</td><td>Access Leave Request page</td><td>Login → Employee Dashboard → Leave Request page</td><td>Leave request page shown</td><td>Leave request page shown</td><td>Pass</td></tr>
-        <tr><td></td><td>5</td><td>Submit Leave Request</td><td>Input start/end date, select leave type, submit</td><td>Leave request submitted successfully</td><td>Leave request submitted successfully</td><td>Pass</td></tr>
-        <tr><td></td><td>6</td><td>View recent leave requests</td><td>Submit leave → Notification → View updated history</td><td>Most recent request at top</td><td>Most recent request at top</td><td>Pass</td></tr>
-        <tr><td>HR Manager Duties</td><td>7</td><td>View Employee Details</td><td>HR Dashboard → Click “Employee Details”</td><td>Employee details displayed</td><td>Employee details displayed</td><td>Pass</td></tr>
-        <tr><td></td><td>8</td><td>Create, Update, Delete Employee Records</td><td>Fill form → Click Save/Update/Delete → Confirm</td><td>Action completed successfully</td><td>Action completed successfully</td><td>Pass</td></tr>
-        <tr><td></td><td>9</td><td>Approve/Reject Leave Requests</td><td>Enter employee number → Status → Click “Update”</td><td>Leave request updated</td><td>Leave request updated</td><td>Pass</td></tr>
-        <tr><td>Payroll Processing</td><td>10</td><td>Access Payroll Dashboard</td><td>Login as HR/Admin → Click Process Payroll</td><td>Routed to payroll page</td><td>Routed to payroll page</td><td>Pass</td></tr>
-        <tr><td></td><td>11</td><td>Process Payroll</td><td>Input hours, overtime, deductions → Click Calculate → Click Process Payroll</td><td>Payroll processed successfully</td><td>Payroll processed successfully</td><td>Pass</td></tr>
-        <tr><td></td><td>12</td><td>View Processed Payslip</td><td>Process payroll → Confirmation → Review latest payslip</td><td>Most recent payslip visible</td><td>Most recent payslip visible</td><td>Pass</td></tr>
-      </table>
+      <p>Test case details are documented in the README file of the repository for clarity and ease of access.</p>
     </div>
 
-    <div class="section">
-      <h2>How to Use</h2>
-      <ol>
-        <li>Clone the repository from GitHub.</li>
-        <li>Compile the project using any Java IDE or command line.</li>
-        <li>Launch the application and log in with valid credentials.</li>
-        <li>Access respective modules: Leave, Employee Management, Payroll.</li>
-      </ol>
-    </div>
-
-    <div class="section">
-      <p>Thank you for visiting our documentation! For any concerns or technical support, feel free to contact any group member.</p>
+    <div class="section" id="contact">
+      <h2>Contact</h2>
+      <p>For any concerns or technical support, feel free to contact any group member listed above.</p>
     </div>
   </div>
+
+  <button class="back-to-top" onclick="scrollToTop()">Top</button>
+
+  <script>
+    const navLinks = document.getElementById('navLinks');
+    function toggleMenu() {
+      navLinks.classList.toggle('active');
+    }
+
+    window.onscroll = function () {
+      const button = document.querySelector('.back-to-top');
+      if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        button.style.display = "block";
+      } else {
+        button.style.display = "none";
+      }
+    };
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
 </body>
 
 </html>
